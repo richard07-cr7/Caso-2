@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Caso 03 | Botica Salud Sur</title>
+<style>
+:root{--bg:#f3f7f6;--card:#fff;--tx:#14302c;--mu:#5b7570;--ac:#0f766e;--ac2:#e6f4f1;--bd:#d5e3e0;--red:#b42318;--amb:#b45309;--grn:#15803d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1b19;--card:#152624;--tx:#e4f1ee;--mu:#93aca7;--ac:#2dd4bf;--ac2:#1b3330;--bd:#27403c;--red:#f87171;--amb:#fbbf24;--grn:#4ade80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1b19;--card:#152624;--tx:#e4f1ee;--mu:#93aca7;--ac:#2dd4bf;--ac2:#1b3330;--bd:#27403c;--red:#f87171;--amb:#fbbf24;--grn:#4ade80;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+header{background:var(--ac);color:#fff;border-radius:16px;padding:24px}
+:root:not([data-theme="light"]) header{}
+header h1{margin:0 0 4px;font-size:1.6rem}
+header .sub{opacity:.9;font-size:.95rem;margin:0 0 12px}
+header p{margin:0;font-size:.95rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) header{color:#04211d}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px}
+.stat span{display:block;color:var(--mu);font-size:.85rem}
+.stat b{font-size:1.8rem;color:var(--ac)}
+section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:16px}
+h2{margin:0 0 12px;font-size:1.1rem}
+form{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));align-items:end}
+form .full{grid-column:1/-1}
+label{display:grid;gap:4px;font-size:.88rem;color:var(--mu)}
+input,select,textarea,button{font:inherit;border-radius:8px;border:1px solid var(--bd);padding:9px 10px;background:var(--bg);color:var(--tx)}
+button{background:var(--ac);color:#fff;border:0;font-weight:600;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.p{color:#04211d}}
+button.s{background:var(--ac2);color:var(--ac);padding:5px 10px;font-size:.82rem}
+button.g{background:transparent;color:var(--mu);border:1px solid var(--bd)}
+.note{font-size:.85rem;color:var(--mu);margin:8px 0 0}
+.msg{margin-top:8px;font-size:.9rem;font-weight:600;min-height:1.2em}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{color:var(--mu);font-weight:600;font-size:.82rem}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.78rem;font-weight:700;background:var(--ac2)}
+.ok{color:var(--grn)}.low{color:var(--amb)}.out,.alto{color:var(--red)}.medio{color:var(--amb)}
+.empty{color:var(--mu);font-size:.9rem;padding:8px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.box{border:1px solid var(--bd);border-radius:10px;padding:12px}
+.box p{margin:4px 0 8px;font-size:.9rem;color:var(--mu)}
+ul{margin:0;padding-left:18px}li{margin:4px 0}
+.inc{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:8px;flex-wrap:wrap}
+.inc small{color:var(--mu)}
+footer{text-align:center;color:var(--mu);font-size:.82rem;margin-top:20px}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Botica Salud Sur E.I.R.L.</h1>
+  <p class="sub">Sistema web básico · Caso 03 — Sistemas de Información Empresarial</p>
+  <p><b>Problema:</b> las ventas sin registrar, los medicamentos sin control de stock y los reclamos que no llegan a tiempo al área de TI generan desabastecimiento y pérdidas. Esta demostración permite registrar despachos, vigilar el inventario y reportar incidentes.</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><span>Despachos registrados</span><b id="sP">0</b></div>
+  <div class="stat"><span>Unidades en almacén</span><b id="sU">0</b></div>
+  <div class="stat"><span>Productos con stock bajo</span><b id="sL">0</b></div>
+  <div class="stat"><span>Incidentes abiertos</span><b id="sI">0</b></div>
+</div>
+
+<section>
+  <h2>1. Registrar despacho</h2>
+  <form id="fo">
+    <label>Producto<select id="prod"></select></label>
+    <label>Cantidad<input id="qty" type="number" min="1" value="1" required></label>
+    <label>Cliente<input id="cli" type="text" placeholder="Nombre del cliente" maxlength="40" required></label>
+    <button class="p" type="submit">Registrar despacho</button>
+  </form>
+  <div class="msg" id="m1"></div>
+  <p class="note">El stock baja automáticamente. Si repites exactamente el mismo despacho en pocos segundos, el sistema lo bloquea para evitar duplicados.</p>
+</section>
+
+<section>
+  <h2>2. Inventario actual</h2>
+  <div class="wrap"><table><thead><tr><th>Producto</th><th>Stock</th><th>Estado</th></tr></thead><tbody id="inv"></tbody></table></div>
+</section>
+
+<section>
+  <h2>3. Historial de despachos</h2>
+  <div class="wrap"><table><thead><tr><th>Código</th><th>Producto</th><th>Cant.</th><th>Cliente</th><th>Fecha</th></tr></thead><tbody id="his"></tbody></table></div>
+  <div class="empty" id="hEmpty">Aún no hay despachos registrados.</div>
+</section>
+
+<section>
+  <h2>4. Reportar problema de TI</h2>
+  <form id="fi">
+    <label>Tipo de problema<select id="tipo"><option>Stock incorrecto</option><option>Despacho duplicado</option><option>Caída del sistema</option><option>Otro problema</option></select></label>
+    <label>Área que reporta<select id="area"><option>Mostrador</option><option>Almacén</option><option>Administración</option></select></label>
+    <label class="full">Descripción<textarea id="desc" rows="2" maxlength="160" placeholder="Describe brevemente lo ocurrido" required></textarea></label>
+    <button class="p" type="submit">Enviar reporte</button>
+  </form>
+</section>
+
+<section>
+  <h2>5. Seguimiento de incidentes</h2>
+  <div id="incs"></div>
+  <div class="empty" id="iEmpty">No hay incidentes reportados.</div>
+</section>
+
+<section>
+  <h2>6. Riesgos tecnológicos</h2>
+  <div class="grid">
+    <div class="box"><b>Vencimiento no detectado</b><p>Registrar lotes y revisar fechas cada semana.</p><span class="tag alto">Alto</span></div>
+    <div class="box"><b>Pérdida de información</b><p>Respaldar la base de datos a diario.</p><span class="tag alto">Alto</span></div>
+    <div class="box"><b>Accesos no autorizados</b><p>Asignar usuarios y contraseñas por rol.</p><span class="tag medio">Medio</span></div>
+    <div class="box"><b>Errores de digitación</b><p>Capacitar al personal de mostrador.</p><span class="tag medio">Medio</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>7. Liderazgo y solución</h2>
+  <ul>
+    <li><b>Escucha activa:</b> atender los reclamos del mostrador y el almacén.</li>
+    <li><b>Transparencia:</b> mostrar a todos el estado de cada incidente.</li>
+    <li><b>Coordinación:</b> alinear ventas, almacén y soporte técnico.</li>
+    <li><b>Decisiones oportunas:</b> priorizar lo que afecta la atención al cliente.</li>
+  </ul>
+</section>
+
+<div style="text-align:center"><button class="g" id="rst" type="button">Reiniciar datos de demostración</button>
+<p class="note">Los registros se guardan solo en este navegador.</p></div>
+<footer>Actividad práctica — Caso 03 · Demostración académica sin servidor ni base de datos externa</footer>
+</main>
+
+<script>
+const KEY="botica_sur_v1";
+const BASE=()=>({stock:{"Paracetamol 500 mg":40,"Ibuprofeno 400 mg":30,"Amoxicilina 500 mg":18,"Suero oral":25,"Alcohol 70°":12,"Vitamina C 1 g":35},orders:[],incs:[],last:null});
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+if(!S||!S.stock)S=BASE();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=ts=>new Date(ts).toLocaleString("es-PE",{dateStyle:"short",timeStyle:"short"});
+const state=n=>n===0?["Agotado","out"]:n<=15?["Stock bajo","low"]:["Disponible","ok"];
+const NEXT={"Pendiente":"En proceso","En proceso":"Resuelto"};
+
+function render(){
+  const names=Object.keys(S.stock);
+  const sel=$("prod"),cur=sel.value;
+  sel.innerHTML=names.map(n=>`<option>${esc(n)}</option>`).join("");
+  if(names.includes(cur))sel.value=cur;
+  $("inv").innerHTML=names.map(n=>{const[s,c]=state(S.stock[n]);return `<tr><td>${esc(n)}</td><td>${S.stock[n]}</td><td class="${c}"><b>${s}</b></td></tr>`}).join("");
+  $("his").innerHTML=S.orders.slice().reverse().map(o=>`<tr><td>${o.id}</td><td>${esc(o.p)}</td><td>${o.q}</td><td>${esc(o.c)}</td><td>${fmt(o.t)}</td></tr>`).join("");
+  $("hEmpty").style.display=S.orders.length?"none":"block";
+  $("incs").innerHTML=S.incs.slice().reverse().map(i=>`<div class="inc"><div><b>${esc(i.tipo)}</b> <span class="tag">${i.est}</span><br><small>${esc(i.area)} · ${fmt(i.t)}</small><br>${esc(i.d)}</div>${NEXT[i.est]?`<button class="s" data-id="${i.id}">Pasar a «${NEXT[i.est]}»</button>`:""}</div>`).join("");
+  $("iEmpty").style.display=S.incs.length?"none":"block";
+  $("sP").textContent=S.orders.length;
+  $("sU").textContent=names.reduce((a,n)=>a+S.stock[n],0);
+  $("sL").textContent=names.filter(n=>S.stock[n]<=15).length;
+  $("sI").textContent=S.incs.filter(i=>i.est!=="Resuelto").length;
+}
+function msg(t,c){const m=$("m1");m.textContent=t;m.className="msg "+c}
+
+$("fo").addEventListener("submit",e=>{
+  e.preventDefault();
+  const p=$("prod").value,q=parseInt($("qty").value,10),c=$("cli").value.trim();
+  if(!q||q<1||!c)return msg("Completa todos los campos con datos válidos.","out");
+  const key=p+"|"+q+"|"+c.toLowerCase(),now=Date.now();
+  if(S.last&&S.last.k===key&&now-S.last.t<15000)return msg("Despacho duplicado bloqueado: ya se registró hace unos segundos.","low");
+  if(q>S.stock[p])return msg("Stock insuficiente: solo quedan "+S.stock[p]+" unidades de "+p+".","out");
+  S.stock[p]-=q;
+  const id="DSP-"+String(S.orders.length+1).padStart(3,"0");
+  S.orders.push({id,p,q,c,t:now});
+  S.last={k:key,t:now};
+  save();render();
+  msg("Despacho "+id+" registrado correctamente.","ok");
+  $("qty").value=1;$("cli").value="";
+});
+
+$("fi").addEventListener("submit",e=>{
+  e.preventDefault();
+  const d=$("desc").value.trim();
+  if(!d)return;
+  S.incs.push({id:Date.now(),tipo:$("tipo").value,area:$("area").value,d,est:"Pendiente",t:Date.now()});
+  save();render();$("desc").value="";
+});
+
+$("incs").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-id]");if(!b)return;
+  const i=S.incs.find(x=>x.id==b.dataset.id);
+  if(i&&NEXT[i.est]){i.est=NEXT[i.est];save();render()}
+});
+
+$("rst").addEventListener("click",()=>{
+  if(!confirm("¿Reiniciar todos los datos de demostración?"))return;
+  S=BASE();save();render();msg("","");
+});
+render();
+</script>
+</body>
+</html>
